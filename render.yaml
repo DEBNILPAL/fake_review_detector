@@ -1,0 +1,34 @@
+services:
+  - type: web
+    name: hackspire-backend
+    env: node
+    plan: free
+    buildCommand: "cd backend && npm install"
+    startCommand: "node backend/server.js"
+    envVars:
+      - key: DB_USER
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: DB_HOST
+        sync: false
+      - key: DB_PORT
+        sync: false
+      - key: DB_NAME
+        sync: false
+      - key: PYTHON_PATH
+        sync: false
+      - key: INFERENCE_SCRIPT
+        sync: false
+    autoDeploy: true
+
+  - type: web
+    name: hackspire-frontend
+    env: node
+    plan: free
+    buildCommand: "cd frontend && npm install && npm run build"
+    startCommand: "npx serve -s frontend/dist -l $PORT"
+    envVars:
+      - key: VITE_BACKEND_URL
+        value: "https://hackspire-backend.onrender.com"
+    autoDeploy: true
